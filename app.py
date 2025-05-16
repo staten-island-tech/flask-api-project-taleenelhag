@@ -3,16 +3,14 @@ import requests
 
 app = Flask(__name__)
 
-# Home page – list of wanted persons
 @app.route("/")
 def index():
     response = requests.get("https://api.fbi.gov/wanted/v1/list")
     data = response.json()
 
-    wanted_list = data.get("items", [])  # List of wanted individuals
+    wanted_list = data.get("items", [])  
     return render_template("index.html", wanted=wanted_list)
 
-# Detail page for a wanted person
 @app.route("/wanted/<uid>")
 def wanted_detail(uid):
     response = requests.get(f"https://api.fbi.gov/wanted/v1/list/{uid}")

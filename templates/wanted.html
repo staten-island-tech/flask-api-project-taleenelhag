@@ -8,7 +8,7 @@
 <body>
   <div class="container">
     <h1>{{ person.title }}</h1>
-    <div class="pokemon-detail">
+    <div class="wanted-detail">
       <img src="{{ person.images[0].original }}" alt="Photo of {{ person.title }}">
       <p><strong>Aliases:</strong> {{ person.aliases | join(', ') if person.aliases else 'None' }}</p>
       <p><strong>Nationality:</strong> {{ person.nationality or 'Unknown' }}</p>
