@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    response = requests.get("https://api.fbi.gov/wanted/v1/list")
+    response = requests.get("https://api.fbi.gov/wanted/v1/list?page=2")
     data = response.json()
 
     wanted_list = data.get("items", [])  
@@ -13,7 +13,7 @@ def index():
 
 @app.route("/wanted/<uid>")
 def wanted_detail(uid):
-    response = requests.get(f"https://api.fbi.gov/wanted/v1/list/{uid}")
+    response = requests.get(f"https://api.fbi.gov/wanted/v1/list?page=2{uid}")
     data = response.json()
 
     return render_template("wanted.html", person=data)
