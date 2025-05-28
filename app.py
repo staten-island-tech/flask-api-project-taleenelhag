@@ -2,46 +2,47 @@ from flask import Flask, render_template, request
 import requests
 
 app = Flask(__name__)
+FBI_API_URL = "https://api.fbi.gov/wanted/v1/list"
+cached_people = []
 
-def fetch_fbi_data():
-    """Fetch FBI data, return empty list on error."""
-    url = "https://api.fbi.gov/wanted/v1/list"
-    try:
-        response = requests.get(url, params={"page": 2})
-        response.raise_for_status()
-        return response.json().get("items", [])
-    except:
-        return []
+def format_person(person):
+    return {
+        "name": person.get("title", "Unknown"),
+        "uid": person.get("uid"),
+        "details": person.get("details", "No details available."),
+        "reward_text": person.get("reward_text", ""),
+        "image": person.get("images", [{}])[0].get("original", "/static/placeholder.jpg")
+    }
 
 @app.route("/")
 def index():
-    query = request.args.get("query", "").strip().lower()
-    items = fetch_fbi_data()
-    if query:
-        items = [item for item in items if query in item.get("title", "").lower() or query in item.get("details", "").lower()]
-    return render_template("index.html", wanted=items, query=query)
+    global cached_people
+    search = request.args.get("search", "")
+
+    try:
+        response = requests.get(FBI_API_URL)
+        data = response.json()
+        people = data.get("items", [])
+
+        wanted_list = [format_person(p) for p in people]
+
+        if search:
+            wanted_list = [p for p in wanted_list if search.lower() in p["name"].lower()]
+
+        wanted_list.sort(key=lambda x: x["name"])
+        cached_people = wanted_list
+
+        return render_template("index.html", wanted_list=wanted_list, search_text=search)
+
+    except:
+        return "Sorry, something went wrong", 500
 
 @app.route("/wanted/<uid>")
 def wanted_detail(uid):
-    items = fetch_fbi_data()
-    person = next((p for p in items if p.get("uid") == uid), None)
-    if not person:
-        return f"<h1>Person not found</h1><p><a href='/'>Back to list</a></p>", 404
-    return render_template("wanted.html", person=person)
-
-@app.route("/sort/<key>")
-def sort_by(key):
-    query = request.args.get("query", "").strip().lower()
-    items = fetch_fbi_data()
-    if query:
-        items = [item for item in items if query in item.get("title", "").lower() or query in item.get("details", "").lower()]
-    if key == "title":
-        items.sort(key=lambda x: x.get("title", ""))
-    elif key == "reward":
-        items.sort(key=lambda x: x.get("reward_text", ""))
-    elif key == "publication":
-        items.sort(key=lambda x: x.get("publication", ""))
-    return render_template("index.html", wanted=items, query=query)
+    for person in cached_people:
+        if person["uid"] == uid:
+            return render_template("detail.html", person=person)
+    return "Person not found", 404
 
 if __name__ == "__main__":
     app.run(debug=True)

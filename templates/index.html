@@ -1,41 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>FBI Most Wanted</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <title>FBI Wanted List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="container">
     <h1>FBI Most Wanted</h1>
-    
-    <form action="{{ url_for('index') }}" method="get">
-      <input type="text" name="query" placeholder="Search by name or details..." value="{{ query }}">
-      <button type="submit">Search</button>
+
+    <form method="GET" action="/">
+        <input type="text" name="search" placeholder="Search name..." value="{{ search_text }}">
+        <button type="submit">Search</button>
     </form>
 
-    <p>Sort by: 
-      <a href="{{ url_for('sort_by', key='title', query=query) }}">Title</a> | 
-      <a href="{{ url_for('sort_by', key='reward', query=query) }}">Reward</a> | 
-      <a href="{{ url_for('sort_by', key='publication', query=query) }}">Publication Date</a>
-    </p>
-
-    <div class="card-container">
-      {% for person in wanted %}
-      <a href="{{ url_for('wanted_detail', uid=person.uid) }}" class="card-link">
-        <div class="card">
-          <img src="{{ person.images[0].original if person.images else '/static/placeholder.jpg' }}" alt="{{ person.title }}">
-          <div class="card-body">
-            <h3 class="card-title">{{ person.title }}</h3>
-            <p class="card-text">{{ person.subjects[0] if person.subjects else 'Unknown' }}</p>
-          </div>
-        </div>
-      </a>
-      {% else %}
-      <p>No results found.</p>
-      {% endfor %}
-    </div>
-  </div>
+    {% if wanted_list %}
+        <ul>
+        {% for person in wanted_list %}
+            <li>
+                <a href="/wanted/{{ person.uid }}">
+                    <img src="{{ person.image }}" alt="{{ person.name }}">
+                    <h3>{{ person.name }}</h3>
+                    <p>{{ person.reward_text }}</p>
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No wanted persons found.</p>
+    {% endif %}
 </body>
 </html>
+
+
 
 

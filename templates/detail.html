@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ person.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="detail-page">
+        <h1>{{ person.name }}</h1>
+        <img src="{{ person.image }}" alt="{{ person.name }}">
+        <p><strong>Details:</strong> {{ person.details }}</p>
+
+        {% if person.reward_text %}
+            <p><strong>Reward:</strong> {{ person.reward_text }}</p>
+        {% endif %}
+
+        <a href="/" class="back-link">← Back to List</a>
+    </div>
+</body>
+</html>
+
+

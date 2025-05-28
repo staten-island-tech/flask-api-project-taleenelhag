@@ -1,118 +1,104 @@
-/* Global styles */
+/* Reset and base styles */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f2f4f8;
-  margin: 0;
-  padding: 0;
-  color: #333;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
 }
 
-/* Page container */
-.container {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
-
-/* Title */
 h1 {
-  text-align: center;
-  font-size: 2.5em;
-  margin-bottom: 30px;
-  color: #1a1a1a;
+    color: #333;
+    margin-bottom: 20px;
 }
 
-/* Search form */
 form {
-  text-align: center;
-  margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 
 input[type="text"] {
-  width: 300px;
-  padding: 10px;
-  font-size: 1em;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+    padding: 10px;
+    width: 250px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
 button {
-  padding: 10px 20px;
-  font-size: 1em;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  margin-left: 10px;
-  cursor: pointer;
+    padding: 10px 15px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 button:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
 
-/* Card Layout */
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+/* Card layout for wanted list */
+ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
 }
 
-.card-link {
-  text-decoration: none;
-  color: inherit;
+li {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 15px;
+    width: 220px;
+    text-align: center;
+    transition: transform 0.2s ease;
 }
 
-.card {
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  width: 260px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease;
-  overflow: hidden;
+li:hover {
+    transform: scale(1.05);
 }
 
-.card:hover {
-  transform: translateY(-5px);
+li img {
+    max-width: 100%;
+    border-radius: 5px;
 }
 
-.card img {
-  width: 100%;
-  height: 280px;
-  object-fit: cover;
+li h3 {
+    font-size: 18px;
+    margin: 10px 0 5px;
+    color: #222;
 }
 
-.card-body {
-  padding: 15px;
+li p {
+    font-size: 14px;
+    color: #555;
 }
 
-.card-title {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin: 0 0 10px;
+/* Detail page styling */
+.detail-container {
+    background-color: white;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
-.card-text {
-  font-size: 0.95em;
-  color: #555;
+.detail-container img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 15px 0;
 }
 
-/* Person detail view */
-.person-detail {
-  text-align: center;
+a {
+    color: #007bff;
+    text-decoration: none;
 }
 
-.person-detail img {
-  width: 300px;
-  height: auto;
-  border-radius: 10px;
-  margin-bottom: 20px;
+a:hover {
+    text-decoration: underline;
 }
 
-.person-detail p {
-  font-size: 1.1em;
-  margin: 10px 0;
-}
 
