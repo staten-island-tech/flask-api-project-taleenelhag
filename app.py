@@ -2,47 +2,45 @@ from flask import Flask, render_template, request
 import requests
 
 app = Flask(__name__)
-FBI_API_URL = "https://api.fbi.gov/wanted/v1/list"
-cached_people = []
+API_URL = "https://rickandmortyapi.com/api/character"
+cached_characters = []
 
-def format_person(person):
+def format_character(c):
     return {
-        "name": person.get("title", "Unknown"),
-        "uid": person.get("uid"),
-        "details": person.get("details", "No details available."),
-        "reward_text": person.get("reward_text", ""),
-        "image": person.get("images", [{}])[0].get("original", "/static/placeholder.jpg")
+        "id": c.get("id"),
+        "name": c.get("name", "Unknown"),
+        "status": c.get("status", "Unknown"),
+        "species": c.get("species", "Unknown"),
+        "gender": c.get("gender", "Unknown"),
+        "origin": c.get("origin", {}).get("name", "Unknown"),
+        "image": c.get("image", "/static/placeholder.jpg")
     }
 
 @app.route("/")
 def index():
-    global cached_people
+    global cached_characters
     search = request.args.get("search", "")
+    page = request.args.get("page", "1")
 
     try:
-        response = requests.get(FBI_API_URL)
+        response = requests.get(API_URL, params={"page": page, "name": search})
         data = response.json()
-        people = data.get("items", [])
+        characters = data.get("results", [])
 
-        wanted_list = [format_person(p) for p in people]
+        character_list = [format_character(c) for c in characters]
+        cached_characters = character_list
 
-        if search:
-            wanted_list = [p for p in wanted_list if search.lower() in p["name"].lower()]
-
-        wanted_list.sort(key=lambda x: x["name"])
-        cached_people = wanted_list
-
-        return render_template("index.html", wanted_list=wanted_list, search_text=search)
+        return render_template("index.html", character_list=character_list, search_text=search)
 
     except:
-        return "Sorry, something went wrong", 500
+        return "Sorry, something went wrong.", 500
 
-@app.route("/wanted/<uid>")
-def wanted_detail(uid):
-    for person in cached_people:
-        if person["uid"] == uid:
-            return render_template("detail.html", person=person)
-    return "Person not found", 404
+@app.route("/character/<int:char_id>")
+def character_detail(char_id):
+    for character in cached_characters:
+        if character["id"] == char_id:
+            return render_template("detail.html", character=character)
+    return "Character not found", 404
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -2,22 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ person.name }}</title>
+    <title>{{ character.name }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="detail-page">
-        <h1>{{ person.name }}</h1>
-        <img src="{{ person.image }}" alt="{{ person.name }}">
-        <p><strong>Details:</strong> {{ person.details }}</p>
-
-        {% if person.reward_text %}
-            <p><strong>Reward:</strong> {{ person.reward_text }}</p>
-        {% endif %}
-
-        <a href="/" class="back-link">← Back to List</a>
+    <div class="detail-container">
+        <h1>{{ character.name }}</h1>
+        <img src="{{ character.image }}" alt="{{ character.name }}">
+        <ul>
+            <li><strong>Status:</strong> {{ character.status }}</li>
+            <li><strong>Species:</strong> {{ character.species }}</li>
+            <li><strong>Gender:</strong> {{ character.gender }}</li>
+            <li><strong>Origin:</strong> {{ character.origin }}</li>
+        </ul>
+        <br>
+        <a href="/">← Back to list</a>
     </div>
 </body>
 </html>
+
+
+
 
 

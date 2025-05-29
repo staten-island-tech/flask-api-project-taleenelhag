@@ -2,34 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FBI Wanted List</title>
+    <title>Rick and Morty Characters</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>FBI Most Wanted</h1>
+    <h1>Rick and Morty Characters</h1>
 
-    <form method="GET" action="/">
-        <input type="text" name="search" placeholder="Search name..." value="{{ search_text }}">
+    <form method="get">
+        <input type="text" name="search" placeholder="Search characters..." value="{{ search_text }}">
         <button type="submit">Search</button>
     </form>
 
-    {% if wanted_list %}
+    {% if character_list %}
         <ul>
-        {% for person in wanted_list %}
-            <li>
-                <a href="/wanted/{{ person.uid }}">
-                    <img src="{{ person.image }}" alt="{{ person.name }}">
-                    <h3>{{ person.name }}</h3>
-                    <p>{{ person.reward_text }}</p>
-                </a>
-            </li>
-        {% endfor %}
+            {% for character in character_list %}
+                <li>
+                    <a href="/character/{{ character.id }}">
+                        <img src="{{ character.image }}" alt="{{ character.name }}">
+                        <strong>{{ character.name }}</strong>
+                        <span>{{ character.species }}</span>
+                    </a>
+                </li>
+            {% endfor %}
         </ul>
     {% else %}
-        <p>No wanted persons found.</p>
+        <p>No characters found or something went wrong.</p>
     {% endif %}
 </body>
 </html>
+
+
 
 
 
