@@ -20,7 +20,7 @@ def format_character(c):
 def index():
     global cached_characters
     search = request.args.get("search", "")
-    page = request.args.get("page", "1")
+    page = request.args.get("page", "7")
 
     try:
         response = requests.get(API_URL, params={"page": page, "name": search})
